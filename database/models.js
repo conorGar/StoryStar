@@ -68,7 +68,7 @@ const Chapter = db.define('chapter', {
     }
   })
 
-  const Content = db.define('chapter', {
+  const Content = db.define('content', {
     content_link: Sequelize.STRING,
     order_value: Sequelize.INTEGER
   })
@@ -85,23 +85,19 @@ User.beforeCreate(async (user, options) => {
 // define relationships
 
 User.hasMany(Story)
+User.hasMany(Review)
 
 
-Story.belongsTo(User, {
-  through: 'story_user_xref'
-})
+Story.belongsTo(User)
 
-Story.hasMany(Chapter, {
-})
+Story.hasMany(Chapter)
 
-Chapter.belongsTo(Story, {
-    through: 'story_user_xref'
-})
+Chapter.belongsTo(Story)
 
 Chapter.hasMany(Review)
 Chapter.hasMany(Content)
 
-Review.hasOne(User)
+// Review.hasOne(User)
 Review.belongsTo(Chapter)
 Review.hasMany(Star);
 
@@ -123,5 +119,6 @@ module.exports = {
   Review,
   Story,
   Chapter,
-  Star
+  Star,
+  Content
 }

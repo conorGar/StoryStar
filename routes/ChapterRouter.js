@@ -1,53 +1,35 @@
 const express = require('express')
-const { User, Story, Chapter } = require('../database/models')
-const StoryRouter = express.Router()
+const { Chapter, Story } = require('../database/models')
+const ChapterRouter = express.Router()
 
 /********* GET -- localhost:PORT/ *********/
 
-StoryRouter.get('/', async (request, response) => {
+ChapterRouter.get('/story/:id', async (request, response) => {
   try {
-    console.log('request')
-    const stories = await Story.findAll()
+    const id = request.params.id
 
-    response.send(stories)
+    console.log('request')
+    const chapters = await Chapter.findAll({
+        where: {
+            storyId: id
+        }
+    })
+
+    response.send(chapters)
   } catch (e) {
     response.status(500).json({ msg: e.message })
   }
 })
 
-/********* GET -- localhost:PORT//2 *********/
-
-
-StoryRouter.get('/:id', async (request, response) => {
-  try {
-    const id = request.params.id
-    const story = await Story.findByPk(id, {
-      include: [User, Chapter]
-    })
-    if (!story) throw Error
-    response.send(story)
-  } catch (e) {
-    response.status(404).json({ msg: e.message })
-  }
-})
 
 /********* CREATE -- localhost:PORT/ *********/
-StoryRouter.post('/create/user/:id', async (request, response) => {
+ChapterRouter.post('/create/story/:id', async (request, response) => {
   try {
     const id = request.params.id
-    const story = await Story.create(request.body)
-    const user = await User.findByPk(id)
-    if (!user) throw Error
-    story.setUser(user)
-    const users = request.body.username.split(', ')
-    users.map(async user => {
-      let addedUser = await User.findOne({
-        where: {
-          username: user
-        }
-      })
-      story.addUser(addedUser)
-    })
+    const chapter = await Chapter.create(request.body)
+    const story = await Story.findByPk(id)
+    if (!story) throw Error
+    chapter.setStory(story)
     response.json(story)
   } catch (e) {
     response.status(500).json({ msg: e.message })
@@ -55,20 +37,20 @@ StoryRouter.post('/create/user/:id', async (request, response) => {
 })
 
 /********* UPDATE -- localhost:PORT//2 *********/
-StoryRouter.put('/:id', async (request, response) => {
+ChapterRouter.put('/:id', async (request, response) => {
   try {
     const id = request.params.id
     const story = await Story.findByPk(id)
     if (!story) throw Error
-    const users = request.body.username.split(', ')
-    users.map(async element => {
-      let addedUser = await User.findOne({
-        where: {
-          username: element
-        }
-      })
-      return story.addUser(addedUser)
-    })
+    // const users = request.body.username.split(', ')
+    // users.map(async element => {
+    //   let addedUser = await User.findOne({
+    //     where: {
+    //       username: element
+    //     }
+    //   })
+    //   return story.addUser(addedUser)
+    // })
     await story.update(request.body)
     response.json({
       story
@@ -81,7 +63,7 @@ StoryRouter.put('/:id', async (request, response) => {
 })
 
 /********* DELETE -- localhost:PORT//2 *********/
-StoryRouter.delete('/:id', async (request, response) => {
+ChapterRouter.delete('/:id', async (request, response) => {
   try {
     const id = request.params.id
     const story = await Story.findByPk(id)
@@ -95,7 +77,7 @@ StoryRouter.delete('/:id', async (request, response) => {
   }
 })
 
-StoryRouter.delete('/:id/user/:username', async (request, response) => {
+ChapterRouter.delete('/:id/user/:username', async (request, response) => {
   try {
     const id = request.params.id
     const username = request.params.username
@@ -115,4 +97,4 @@ StoryRouter.delete('/:id/user/:username', async (request, response) => {
   }
 })
 
-module.exports = StoryRouter
+module.exports = ChapterRouter

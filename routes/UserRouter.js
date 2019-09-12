@@ -1,5 +1,5 @@
 const express = require('express')
-const { User, Project } = require('../database/models')
+const { User, Story } = require('../database/models')
 const UserRouter = express.Router()
 
 /********* GET -- localhost:PORT/ *********/
@@ -21,7 +21,7 @@ UserRouter.get('/:id', async (request, response) => {
   try {
     const id = request.params.id
     const user = await User.findByPk(id, {
-      include: [Project]
+      include: [Story]
     })
     console.log("User data grab: " + user);
     if (!user) throw Error('User not found')
@@ -39,7 +39,7 @@ UserRouter.get('/edit/:id', async (request, response) => {
   try {
     const id = request.params.id
     const user = await User.findByPk(id, {
-      include: [Project]
+      include: [Story]
     })
     console.log("User data grab: " + user);
     if (!user) throw Error('User not found')
