@@ -43,13 +43,12 @@ passport.use(
     },
     async (req, username, password, done) => {
       try {
-        const { body: { name, email, linkedin } } = req
+        const { body: { name, email } } = req
 
         const user = await User.create({
           name: name,
           username: username,
           email: email,
-          linkedin: linkedin,
           password: password
         })
 
