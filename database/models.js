@@ -1,12 +1,19 @@
 const { Sequelize } = require('sequelize')
 const bcrypt = require('bcrypt')
 
-let db;
+// let db;
 
 
-  db = new Sequelize(process.env.DATABASE_URL , {
-    dialect: 'postgres'
-  });
+//   db = new Sequelize(process.env.DATABASE_URL , {
+//     dialect: 'postgres'
+//   });
+
+
+// connection to the database
+const db = new Sequelize({
+  database: 'storystar_db',
+  dialect: 'postgres'
+})
 
 
 // define models
@@ -61,6 +68,11 @@ const Chapter = db.define('chapter', {
     }
   })
 
+  const Content = db.define('chapter', {
+    content_link: Sequelize.STRING,
+    order_value: Sequelize.INTEGER
+  })
+
 const Star = db.define('star')
 
 User.beforeCreate(async (user, options) => {
@@ -72,9 +84,7 @@ User.beforeCreate(async (user, options) => {
 })
 // define relationships
 
-User.hasMany(Story, {
-  through: 'story_user_xref'
-})
+User.hasMany(Story)
 
 
 Story.belongsTo(User, {
@@ -89,6 +99,7 @@ Chapter.belongsTo(Story, {
 })
 
 Chapter.hasMany(Review)
+Chapter.hasMany(Content)
 
 Review.hasOne(User)
 Review.belongsTo(Chapter)
@@ -96,7 +107,10 @@ Review.hasMany(Star);
 
 
 Star.belongsTo(User);
-Star.hasMany(Review);
+// Star.hasMany(Review);
+
+
+Content.belongsTo(Chapter)
 
 
 
