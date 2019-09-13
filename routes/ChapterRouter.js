@@ -1,5 +1,5 @@
 const express = require('express')
-const { Chapter, Story } = require('../database/models')
+const { Chapter, Content, Story } = require('../database/models')
 const ChapterRouter = express.Router()
 
 /********* GET -- localhost:PORT/ *********/
@@ -9,16 +9,26 @@ ChapterRouter.get('/story/:id', async (request, response) => {
     const id = request.params.id
 
     console.log('request')
-    const chapters = await Chapter.findAll({
-        where: {
-            storyId: id
-        }
+    // const chapters = await Chapter.findAll({
+    //     where: {
+    //         storyId: id
+    //     }
+    // })
+
+    const story = await Chapter.findByPk(id, {
+      include: [Content]
     })
 
-    response.send(chapters)
+    if (!story) throw Error
+    response.send(story)
   } catch (e) {
-    response.status(500).json({ msg: e.message })
+    response.status(404).json({ msg: e.message })
   }
+
+  //   response.send(chapters)
+  // } catch (e) {
+  //   response.status(500).json({ msg: e.message })
+  // }
 })
 
 

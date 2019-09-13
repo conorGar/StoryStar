@@ -1,4 +1,4 @@
-const { User, Story, Chapter } = require('./models')
+const { User, Story, Chapter, Content } = require('./models')
 
 
 
@@ -29,12 +29,28 @@ const main = async () => {
       const ch1 = await Chapter.create({
           name: 'The Elephants Foot'
       })
+
+      const ch1_p1 = await Content.create({
+          content_link: "https://www.almostsomebodycomic.com/ch1/page1_v3.jpg"
+      })
+
+
+
+      const ch1_p2 = await Content.create({
+        content_link: "https://www.almostsomebodycomic.com/ch1/page2_v2.jpg"
+
+    })
      
   
       await almostSomebody.setUser(Conor)
       await Conor.addStory(almostSomebody)
       await almostSomebody.addChapter(ch1)
       await ch1.setStory(almostSomebody)
+      await ch1.addContent(ch1_p1)
+      await ch1.addContent(ch1_p2)
+
+      await ch1_p1.setChapter(ch1);
+      await ch1_p2.setChapter(ch1);
 
   
     } catch (error) {
