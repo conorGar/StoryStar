@@ -35,8 +35,27 @@ ChapterRouter.get('/story/:id', async (request, response) => {
 /********* CREATE -- localhost:PORT/ *********/
 ChapterRouter.post('/create/story/:id', async (request, response) => {
   try {
+    console.log("Chapter create request body:" + request.body.name)
+    console.log(request.body)
+    console.log("Chapter create request params:" + request.params)
+
     const id = request.params.id
-    const chapter = await Chapter.create(request.body)
+    const chapter = await Chapter.create({name: request.body.name})
+    const pages = request.body.contents
+    console.log(pages)
+    console.log("page component:" + pages[0])
+    console.log("page content link:" + pages[0].content_link)
+    console.log("page length:" + pages.length)
+
+
+
+    //loop through all content pages and put them in database
+    for(let i = 0; i < pages.length; i++){
+      const newContent = await Content.create({content_link: pages[i]})
+      newContent.setChapter(chapter)
+    }
+
+
     const story = await Story.findByPk(id)
     if (!story) throw Error
     chapter.setStory(story)
