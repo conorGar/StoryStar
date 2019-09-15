@@ -1,5 +1,5 @@
 const express = require('express')
-const { Chapter, Content, Story } = require('../database/models')
+const { Chapter, Content, Story, Review, User } = require('../database/models')
 const ChapterRouter = express.Router()
 
 /********* GET -- localhost:PORT/ *********/
@@ -31,21 +31,34 @@ ChapterRouter.get('/story/:id', async (request, response) => {
   // }
 })
 
+//**      GET ALL CHAPTER REVIEWS    */
+ChapterRouter.get('/review/:id', async(req,res) => {
+  const id = req.params.id
+
+  try{
+    const reviews = await Review.findAll({
+      where: {
+          chapterId: id
+      }
+  })
+  if (!reviews) throw Error
+  res.send(reviews)
+
+
+  }catch(e){
+    res.status(404).json({ msg: e.message })
+  }
+})
+
 
 /********* CREATE -- localhost:PORT/ *********/
 ChapterRouter.post('/create/story/:id', async (request, response) => {
   try {
-    console.log("Chapter create request body:" + request.body.name)
-    console.log(request.body)
-    console.log("Chapter create request params:" + request.params)
 
     const id = request.params.id
     const chapter = await Chapter.create({name: request.body.name})
     const pages = request.body.contents
-    console.log(pages)
-    console.log("page component:" + pages[0])
-    console.log("page content link:" + pages[0].content_link)
-    console.log("page length:" + pages.length)
+
 
 
 
@@ -63,6 +76,30 @@ ChapterRouter.post('/create/story/:id', async (request, response) => {
   } catch (e) {
     response.status(500).json({ msg: e.message })
   }
+})
+
+//*******     Post a review on a chapter ******** */
+ChapterRouter.post('/create/:id/review', async(req,res) =>{
+  try{
+
+    console.log(req.body)
+
+    const id = req.params.id
+    const reviewPost = await Review.create({points: 1, description:req.body.reviewText})
+     const chapter = await Chapter.findByPk(id);
+
+    const user = await User.findByPk(req.body.currentUserId)
+    console.log(user)
+    reviewPost.setChapter(chapter)
+    reviewPost.setUser(user)
+    res.json(reviewPost)
+
+
+  }catch(e){
+    res.status(500).json({ msg: e.message })
+
+  }
+
 })
 
 /********* UPDATE -- localhost:PORT//2 *********/

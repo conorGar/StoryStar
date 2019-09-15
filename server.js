@@ -15,6 +15,7 @@ require('dotenv').config()
 const StoryRouter = require('./routes/StoryRouter')
 const ChapterRouter = require('./routes/ChapterRouter')
 const UserRouter = require('./routes/UserRouter')
+const ReviewRouter = require('./routes/ReviewRouter')
 
 const PORT = process.env.PORT || 3001
 
@@ -37,6 +38,7 @@ app.get('/', async (req, res) => {
 
 app.use('/story', StoryRouter)
 app.use('/chapter', ChapterRouter)
+app.use('/review', ReviewRouter)
 
 
 app.use('/users', UserRouter)

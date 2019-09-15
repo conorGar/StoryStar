@@ -99,10 +99,13 @@ Chapter.hasMany(Content)
 
 // Review.hasOne(User)
 Review.belongsTo(Chapter)
+Review.belongsTo(User)
+
 Review.hasMany(Star);
 
 
 Star.belongsTo(User);
+Star.belongsTo(Review);
 // Star.hasMany(Review);
 
 
