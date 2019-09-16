@@ -4,16 +4,16 @@ const bcrypt = require('bcrypt')
 // let db;
 
 
-//   db = new Sequelize(process.env.DATABASE_URL , {
-//     dialect: 'postgres'
-//   });
+  const db = new Sequelize(process.env.DATABASE_URL , {
+    dialect: 'postgres'
+  });
 
 
-// connection to the database
-const db = new Sequelize({
-  database: 'storystar_db',
-  dialect: 'postgres'
-})
+// // connection to the database
+// const db = new Sequelize({
+//   database: 'storystar_db',
+//   dialect: 'postgres'
+// })
 
 
 // define models
