@@ -1,5 +1,5 @@
 const express = require('express')
-const { User, Story } = require('../database/models')
+const { User, Story, Subscription } = require('../database/models')
 const UserRouter = express.Router()
 
 /********* GET -- localhost:PORT/ *********/
@@ -21,7 +21,7 @@ UserRouter.get('/:id', async (request, response) => {
   try {
     const id = request.params.id
     const user = await User.findByPk(id, {
-      include: [Story]
+      include: [Story, Subscription]
     })
     console.log("User data grab: " + user);
     if (!user) throw Error('User not found')
@@ -61,6 +61,35 @@ UserRouter.post('/signup', async (request, response) => {
     response.status(500).json({ msg: e.message })
   }
 })
+
+
+//*** Add New Subscription */
+UserRouter.post('/subscription/:id', async (request, response) => {
+  try {
+
+    const id = request.params.id
+
+    const newSubscription = await Subscription.create()
+    console.log(newSubscription)
+    const user = await User.findByPk(request.body.currentUserId)
+    console.log(user)
+
+    const story = await Story.findByPk(id);
+    console.log(story)
+
+    newSubscription.setUser(user)
+    newSubscription.setStory(story)
+    user.addSubscription(newSubscription)
+
+    
+    response.json({
+      newSubscription
+    })
+  } catch (e) {
+    response.status(500).json({ msg: e.message })
+  }
+})
+
 
 /********* UPDATE -- localhost:PORT/2 *********/
 UserRouter.put('/:id', async (request, response) => {

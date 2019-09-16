@@ -85,7 +85,7 @@ ChapterRouter.post('/create/:id/review', async(req,res) =>{
     console.log(req.body)
 
     const id = req.params.id
-    const reviewPost = await Review.create({points: 1, description:req.body.reviewText})
+    const reviewPost = await Review.create({points: 0, description:req.body.reviewText})
      const chapter = await Chapter.findByPk(id);
 
     const user = await User.findByPk(req.body.currentUserId)

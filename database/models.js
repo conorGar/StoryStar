@@ -75,6 +75,8 @@ const Chapter = db.define('chapter', {
 
 const Star = db.define('star')
 
+const Subscription = db.define('subscription')
+
 User.beforeCreate(async (user, options) => {
   const hashedPassword = await bcrypt.hash(
     user.password,
@@ -86,7 +88,7 @@ User.beforeCreate(async (user, options) => {
 
 User.hasMany(Story)
 User.hasMany(Review)
-
+User.hasMany(Subscription)
 
 Story.belongsTo(User)
 
@@ -106,8 +108,9 @@ Review.hasMany(Star);
 
 Star.belongsTo(User);
 Star.belongsTo(Review);
-// Star.hasMany(Review);
 
+Subscription.belongsTo(User)
+Subscription.belongsTo(Story)
 
 Content.belongsTo(Chapter)
 
@@ -123,5 +126,6 @@ module.exports = {
   Story,
   Chapter,
   Star,
-  Content
+  Content,
+  Subscription
 }
