@@ -57,16 +57,17 @@ ChapterRouter.post('/create/story/:id', async (request, response) => {
 
     const id = request.params.id
     const chapter = await Chapter.create({name: request.body.name})
-    const pages = request.body.contents
+    const pages = request.body.contents;
 
-
-
-
+    console.log("TRYING TO CREATE A CHAPTER")
+    console.log(pages)
     //loop through all content pages and put them in database
     for(let i = 0; i < pages.length; i++){
       const newContent = await Content.create({content_link: pages[i]})
       newContent.setChapter(chapter)
+      console.log(newContent)
     }
+
 
 
     const story = await Story.findByPk(id)

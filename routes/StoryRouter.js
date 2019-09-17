@@ -32,6 +32,20 @@ StoryRouter.get('/:id', async (request, response) => {
   }
 })
 
+/**    FIND ALL SUBSCRIBED STORIES */
+StoryRouter.get('/subscribed/:id', async(req,res) =>{
+  try {
+    const id = req.params.id
+    const story = await Story.findByPk(id)
+    console.log("GOT HERE - SUBSCRIBED STORY")
+    console.log(story)
+    if (!story) throw Error
+    res.send(story)
+  } catch (e) {
+    res.status(404).json({ msg: e.message })
+  }
+})
+
 /********* CREATE -- localhost:PORT/ *********/
 StoryRouter.post('/create/user/:id', async (request, response) => {
   try {

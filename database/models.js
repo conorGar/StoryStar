@@ -9,7 +9,7 @@ const bcrypt = require('bcrypt')
   });
 
 
-// // connection to the database
+// connection to the database
 // const db = new Sequelize({
 //   database: 'storystar_db',
 //   dialect: 'postgres'
