@@ -47,8 +47,8 @@ authRouter.post('/signup', async (req, res, next) => {
         error.status = 400
         return next(error)
       }
-
-      const { email, id } = user
+      console.log(user)
+      const { email, id, star_points, imgUrl } = user
       const payload = { email, id }
       const token = jwtSign(payload)
       //   const message = JSON.stringify(info)

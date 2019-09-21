@@ -43,13 +43,18 @@ passport.use(
     },
     async (req, username, password, done) => {
       try {
-        const { body: { name, email } } = req
+        console.log("Passport signup REQ:")
+      
+        const { body: { name, email, star_points, imgUrl} } = req
 
         const user = await User.create({
           name: name,
           username: username,
           email: email,
-          password: password
+          password: password,
+          star_points: star_points,
+          imgUrl: imgUrl
+
         })
 
         if (!user) {

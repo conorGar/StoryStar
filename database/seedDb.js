@@ -23,11 +23,13 @@ const main = async () => {
       const almostSomebody = await Story.create({
         name: 'Almost Somebody',
         imgUrl: 'http://www.illuminationworksllc.com/wp-content/uploads/2017/04/ProjectManagement-1.jpg',
+        iconImgUrl: 'http://www.illuminationworksllc.com/wp-content/uploads/2017/04/ProjectManagement-1.jpg',
         description: 'In a near future where humans live forever in robotic suits, one man searches for a way to die',
       })
 
       const ch1 = await Chapter.create({
-          name: 'The Elephants Foot'
+          name: 'The Elephants Foot',
+          iconImgUrl: 'http://www.illuminationworksllc.com/wp-content/uploads/2017/04/ProjectManagement-1.jpg'
       })
 
       const ch1_p1 = await Content.create({

@@ -56,7 +56,7 @@ ChapterRouter.post('/create/story/:id', async (request, response) => {
   try {
 
     const id = request.params.id
-    const chapter = await Chapter.create({name: request.body.name})
+    const chapter = await Chapter.create({name: request.body.name, iconImgUrl: request.body.iconImgUrl})
     const pages = request.body.contents;
 
     console.log("TRYING TO CREATE A CHAPTER")

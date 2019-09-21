@@ -4,16 +4,16 @@ const bcrypt = require('bcrypt')
 // let db;
 
 
-  const db = new Sequelize(process.env.DATABASE_URL , {
-    dialect: 'postgres'
-  });
+//   const db = new Sequelize(process.env.DATABASE_URL , {
+//     dialect: 'postgres'
+//   });
 
 
 // connection to the database
-// const db = new Sequelize({
-//   database: 'storystar_db',
-//   dialect: 'postgres'
-// })
+const db = new Sequelize({
+  database: 'storystar_db',
+  dialect: 'postgres'
+})
 
 
 // define models
@@ -53,6 +53,11 @@ const Story = db.define('story', {
   description: {
     type: Sequelize.TEXT,
     allowNull: false
+  },
+  iconImgUrl:{
+    type: Sequelize.STRING,
+    defaultValue: '',
+    allowNull: false
   }
 })
 
@@ -65,7 +70,13 @@ const Chapter = db.define('chapter', {
     name: {
       type: Sequelize.STRING,
       allowNull: false
+    },  
+    iconImgUrl:{
+        type: Sequelize.STRING,
+        defaultValue: '',
+        allowNull: false
     }
+
   })
 
   const Content = db.define('content', {
